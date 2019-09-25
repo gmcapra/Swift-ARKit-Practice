@@ -7,3 +7,7 @@ This xcode project can be used as a reference for anyone looking to get started 
  - Detect horizontal planes
  - Once detected, place a 3D object on the plane
  - Move, Scale, and Rotate the 3D object in the plane
+ 
+ To reset where the 3D object is, tap on the screen where you'd like to place it.
+ To scale the size of the 3D object, use pinching gestures.
+ To rotate the object in the plane, drag your finger horizontally across the screen.
