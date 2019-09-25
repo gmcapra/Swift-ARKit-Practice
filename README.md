@@ -8,7 +8,7 @@ This xcode project can be used as a reference for anyone looking to get started 
  - Once detected, place a 3D object on the plane
  - Move, Scale, and Rotate the 3D object in the plane
  
-To run this app on your iOS device, simply download this project, and open it in Xcode. Connect your AR capable iOS device to  your computer, and run the program. Note: you will need to enable camera access.
+To run this app on your iOS device, download this project, and open it in Xcode. Then, connect your AR capable iOS device to  your computer and run the program in Xcode. Note: you will need to enable camera access.
 
 Interacting with the 3D object:
  To reset where the 3D object is, tap on the screen where you'd like to place it.
