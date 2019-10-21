@@ -1,5 +1,5 @@
 # Swift-ARKit-Practice
-Repository for a simple app intended for use in practice projects that use Swift's ARKit Library for Augmented Reality.
+Repository for a simple app intended for reference and use in practice projects developed with Swift's ARKit Library for Augmented Reality.
 This xcode project can be used as a reference for anyone looking to get started with AR Kit in Swift. In this project:
 
  - Configure an AR Session
