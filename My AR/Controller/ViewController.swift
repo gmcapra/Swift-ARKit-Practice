@@ -80,7 +80,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     func startGame() {
         // User tapped the Play Button.
         print("starting game set up")
-        addTapGestureToARSceneView()
+        //This function recognizes a tap and adds a ship scn node
+        //addTapGestureToARSceneView()
         
     }
     
