@@ -92,10 +92,6 @@ class MainMenuView: UIView {
 
     func animateLeadingAnchor(constant: CGFloat) {
         mainMenuLeadingAnchor.constant = constant
-        if constant == AR_UI_Elements_.Sizing.width {
-           //
-            
-        }
         UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseInOut, animations: {self.superview!.layoutIfNeeded()}, completion: nil)
     }
     

@@ -11,15 +11,18 @@ import RealityKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
-        
+       
+    // AR Scene Elements
     @IBOutlet var gameSceneView: ARSCNView!
-   
+    // Define the array of detectedPlanes
+    // Every plane has own UUID
+    var detectedPlanes = [UUID: DetectedPlaneNode]()
+    
     // Define Views
     var userOnboardingView: UserOnboardingView!
     var mainMenuView: MainMenuView!
+    // var planeSetupHUDView: PlaneSetupHUDView!
 
-    // Define the array of detected detectedPlanes where every plane has own UUID
-    var detectedPlanes = [UUID: DetectedPlaneNode]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +38,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
         ///////////////////////////////////////////////
         // Add other views here
+        // 1. Need overlay for walking user through primary game plane setup
+        // 2. Additional view to add...
+        // 3. Additional view to add...
+        // 4. Additional view to add...
         //
         //
         ///////////////////////////////////////////////
@@ -52,7 +59,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
      
      override func viewWillDisappear(_ animated: Bool) {
          super.viewWillDisappear(animated)
-         
          // Pause the view's session
          gameSceneView.session.pause()
      }
@@ -87,7 +93,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     }
     
     func configureARSession() {
-        
         // configure the AR session
         let config = ARWorldTrackingConfiguration()
         config.planeDetection = .horizontal
@@ -96,12 +101,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     }
     
     func startGame() {
-        
         // User tapped the Start Button.
         print("starting game set up, adding AR scene")
         
-        //This function recognizes a tap and adds a ship scn node
-        //addTapGestureToARSceneView()
+        // Start showing detected planes
+        
+        
+        // This function recognizes a tap:
+        // After a tap, a 3D ship node is added to the plane
+        addTapGestureToARSceneView()
         
     }
     
@@ -168,7 +176,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
         func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
             if let arPlaneAnchor = anchor as? ARPlaneAnchor, let index = detectedPlanes.index(forKey: arPlaneAnchor.identifier) {
-                detectedPlanes.remove(at: index)
+                while detectedPlanes.count > 1 { //only 1 plane at a time
+                    detectedPlanes.remove(at: index)
+                }
             }
         }
         
