@@ -50,12 +50,12 @@ class MainMenuView: UIView {
         addSubview(mainImage)
         mainImage.translatesAutoresizingMaskIntoConstraints = false
         mainImage.isUserInteractionEnabled = false
-        mainImage.image = UIImage(named: "invadeARtestLogo")
+        mainImage.image = UIImage(named: "menuLogo")
     
         // Create menu items
         addSubview(playButton)
         playButton.translatesAutoresizingMaskIntoConstraints = false
-        playButton.setBackgroundImage(UIImage(named: "playButton"), for: .normal)
+        playButton.setBackgroundImage(UIImage(named: "startButton"), for: .normal)
         playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
         playButton.isHidden = false
         
