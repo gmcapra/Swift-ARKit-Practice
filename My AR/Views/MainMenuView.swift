@@ -18,7 +18,7 @@ class MainMenuView: UIView {
     
     // Objects
     let mainImage = UIImageView()
-    let playButton = UIButton()
+    let startButton = UIButton()
     let gameCenterButton = UIButton()
         
     init(arUIElements: AR_UI_Elements_) {
@@ -53,11 +53,11 @@ class MainMenuView: UIView {
         mainImage.image = UIImage(named: "menuLogo")
     
         // Create menu items
-        addSubview(playButton)
-        playButton.translatesAutoresizingMaskIntoConstraints = false
-        playButton.setBackgroundImage(UIImage(named: "startButton"), for: .normal)
-        playButton.addTarget(self, action: #selector(playButtonTapped), for: .touchUpInside)
-        playButton.isHidden = false
+        addSubview(startButton)
+        startButton.translatesAutoresizingMaskIntoConstraints = false
+        startButton.setBackgroundImage(UIImage(named: "startButton"), for: .normal)
+        startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
+        startButton.isHidden = false
         
         addSubview(gameCenterButton)
         gameCenterButton.translatesAutoresizingMaskIntoConstraints = false
@@ -71,18 +71,18 @@ class MainMenuView: UIView {
             mainImage.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.mainImageHeight),
             mainImage.centerXAnchor.constraint(equalTo: centerXAnchor),
             mainImage.topAnchor.constraint(equalTo: topAnchor, constant: AR_UI_Elements_.Sizing.mainImageToTop),
-            playButton.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.playButtonWidth),
-            playButton.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.playButtonHeight),
-            playButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            playButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            startButton.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.playButtonWidth),
+            startButton.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.playButtonHeight),
+            startButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            startButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             gameCenterButton.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.gameCenterButtonSize),
             gameCenterButton.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.gameCenterButtonSize),
             gameCenterButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            gameCenterButton.topAnchor.constraint(equalTo: playButton.bottomAnchor, constant: AR_UI_Elements_.Sizing.playButtonToBottomButtons)
+            gameCenterButton.topAnchor.constraint(equalTo: startButton.bottomAnchor, constant: AR_UI_Elements_.Sizing.playButtonToBottomButtons)
             ])
     }
     
-    @objc func playButtonTapped() {
+    @objc func startButtonTapped() {
         // Remove the main menu and alert the vc to start the game
         animateLeadingAnchor(constant: AR_UI_Elements_.Sizing.width)
         if let vc = self.window!.rootViewController as? ViewController {

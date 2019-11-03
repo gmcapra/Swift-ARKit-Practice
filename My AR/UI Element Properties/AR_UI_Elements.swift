@@ -73,7 +73,9 @@ struct AR_UI_Elements_ {
         static let hippieOrange = UIColor(displayP3Red: 255/255, green: 173/255, blue: 105/255, alpha: 1.0)
         static let hippieRed = UIColor(displayP3Red: 156/255, green: 56/255, blue: 72/255, alpha: 1.0)
 
-        
+        //PlaneDetection Colors
+        static let representativePlaneColor = UIColor(displayP3Red: 10/255, green: 10/255, blue: 255/255, alpha: 0.8)
+
         
     }
     

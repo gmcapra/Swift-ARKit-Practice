@@ -17,6 +17,7 @@
 		8EB7EA34235CA32800B235DD /* UserOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA33235CA32800B235DD /* UserOnboardingView.swift */; };
 		8EB7EA36235CA50C00B235DD /* CustomerFacingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */; };
 		8EB7EA3A235CB4DB00B235DD /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA39235CB4DB00B235DD /* MainMenuView.swift */; };
+		8EBD0DBD236F49D000504D97 /* DetectedPlaneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */; };
 		8EF238522367B4AF00BE2C51 /* ship.scn in Resources */ = {isa = PBXBuildFile; fileRef = 8EF238512367B4AF00BE2C51 /* ship.scn */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 		8EB7EA33235CA32800B235DD /* UserOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOnboardingView.swift; sourceTree = "<group>"; };
 		8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerFacingText.swift; sourceTree = "<group>"; };
 		8EB7EA39235CB4DB00B235DD /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetectedPlaneNode.swift; path = "My AR/DetectedPlaneNode.swift"; sourceTree = SOURCE_ROOT; };
 		8EF238512367B4AF00BE2C51 /* ship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ship.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -69,7 +71,7 @@
 				8E315E21233ADCD7006560FB /* AppDelegate.swift */,
 				8EB7EA3B235CB4E600B235DD /* UI Element Properties */,
 				8EB7EA3C235CB50800B235DD /* Views */,
-				8EB7EA3D235CB52100B235DD /* Controller */,
+				8EB7EA3D235CB52100B235DD /* AR Controller */,
 				8E315E25233ADCD7006560FB /* Experience.rcproject */,
 				8E315E27233ADCD7006560FB /* Main.storyboard */,
 				8E315E2A233ADCD9006560FB /* Assets.xcassets */,
@@ -98,12 +100,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8EB7EA3D235CB52100B235DD /* Controller */ = {
+		8EB7EA3D235CB52100B235DD /* AR Controller */ = {
 			isa = PBXGroup;
 			children = (
 				8E315E23233ADCD7006560FB /* ViewController.swift */,
+				8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */,
 			);
-			path = Controller;
+			path = "AR Controller";
 			sourceTree = "<group>";
 		};
 		8EF238532367B4D200BE2C51 /* SCN Assets */ = {
@@ -188,6 +191,7 @@
 			files = (
 				8E315E24233ADCD7006560FB /* ViewController.swift in Sources */,
 				8EB7EA3A235CB4DB00B235DD /* MainMenuView.swift in Sources */,
+				8EBD0DBD236F49D000504D97 /* DetectedPlaneNode.swift in Sources */,
 				8E315E22233ADCD7006560FB /* AppDelegate.swift in Sources */,
 				8EB7EA36235CA50C00B235DD /* CustomerFacingText.swift in Sources */,
 				8E315E26233ADCD7006560FB /* Experience.rcproject in Sources */,
