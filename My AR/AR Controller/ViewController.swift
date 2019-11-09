@@ -34,7 +34,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
         // Create the onboarding view and check if needed
         userOnboardingView = UserOnboardingView(arUIElements: AR_UI_Elements_())
-        checkHasLaunched()
+        if (!checkHasLaunched()) {
+            view.addSubview(userOnboardingView)
+            userOnboardingView.buildView()
+        }
+
         
         ///////////////////////////////////////////////
         // Add other views here
@@ -54,7 +58,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     
     override func viewWillAppear(_ animated: Bool) {
          super.viewWillAppear(animated)
-         configureARSession()
+         // Setup the ar session but dont look for planes yet
+         configureARSession(detectPlanes: false)
      }
      
      override func viewWillDisappear(_ animated: Bool) {
@@ -63,25 +68,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
          gameSceneView.session.pause()
      }
     
-    func checkHasLaunched() {
+    func checkHasLaunched()->Bool {
         // Function to check if the app has been previously run on the device
         let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
         print("hasLaunchedBefore: \(hasLaunched)")
         if !UserDefaults.standard.bool(forKey: "hasLaunchedBefore") {
-            // first run on this device, onboard the user
-            print("adding user onboarding")
-            view.addSubview(userOnboardingView)
-            userOnboardingView.buildView()
+            print("user has not completed onboarding")
+            return false
         }
         else {
-            // not the first run on this device
-            print("not the first run")
+            print("returning user")
+            return true
         }
     }
     
     func setupARScene() {
-        // show various stats about our AR session
-        gameSceneView.showsStatistics = true
+
         // enable to show feature dots that the camera recognizes
         gameSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         // initialize the scene
@@ -92,24 +94,28 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
     }
     
-    func configureARSession() {
-        // configure the AR session
+    
+    func configureARSession(detectPlanes: Bool) {
+        // configure the AR session and check for plane detection
         let config = ARWorldTrackingConfiguration()
-        config.planeDetection = .horizontal
+        if detectPlanes {
+            config.planeDetection = .horizontal
+        } else {
+            config.planeDetection = []
+        }
         gameSceneView.session.run(config)
-        
     }
     
     func startGame() {
         // User tapped the Start Button.
         print("starting game set up, adding AR scene")
         
-        // Start showing detected planes
-        
-        
+        // Start detecting and showing planes
+        configureARSession(detectPlanes: true)
+
         // This function recognizes a tap:
-        // After a tap, a 3D ship node is added to the plane
-        addTapGestureToARSceneView()
+        // After a tap, a 3D Rocket is added to the plane
+           addTapGestureToARSceneView()
         
     }
     
@@ -120,7 +126,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     
     func addTapGestureToARSceneView() {
         // Enable the tap gesture recognizer in the AR Scene View
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.stopPlaneDetection(withGestureRecognizer:)))
         gameSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
@@ -128,6 +134,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         // Enable lighting effects in the AR Scene View
         gameSceneView.autoenablesDefaultLighting = true
         gameSceneView.automaticallyUpdatesLighting = true
+    }
+    
+    @objc func stopPlaneDetection(withGestureRecognizer recognizer: UIGestureRecognizer) {
+        if detectedPlanes.count > 0 {
+            //if we have a valid plane, the user taps to stop updating
+            print("STOP PLANE DETECTION")
+            configureARSession(detectPlanes: false)
+        }
     }
     
     @objc func addObjectToARSceneView(withGestureRecognizer recognizer: UIGestureRecognizer) {
@@ -141,7 +155,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         let z = translation.z
         
         guard let shipScene = SCNScene(named: "ship.scn"),
-            let shipNode = shipScene.rootNode.childNode(withName: "ship", recursively: false)
+            let shipNode = shipScene.rootNode.childNode(withName: "Rocket", recursively: false)
             else { return }
         
         shipNode.position = SCNVector3(x,y,z)
@@ -152,7 +166,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         // MARK: - ARSCNViewDelegate
         
     /*
-    // This can be overidden tocreate and configure nodes as anchors are added to the session
+    // This can be overidden to create and configure nodes when anchors are added to the session
         func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
             let node = SCNNode()
             return node
@@ -165,6 +179,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
                 let plane = DetectedPlaneNode(anchor: arPlaneAnchor)
                 self.detectedPlanes[arPlaneAnchor.identifier] = plane
                 node.addChildNode(plane)
+                plane.addAnimation()
             }
         }
         
@@ -176,9 +191,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
         func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
             if let arPlaneAnchor = anchor as? ARPlaneAnchor, let index = detectedPlanes.index(forKey: arPlaneAnchor.identifier) {
-                while detectedPlanes.count > 1 { //only 1 plane at a time
-                    detectedPlanes.remove(at: index)
-                }
+                detectedPlanes.remove(at: index)
             }
         }
         

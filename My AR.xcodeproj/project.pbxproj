@@ -18,6 +18,7 @@
 		8EB7EA36235CA50C00B235DD /* CustomerFacingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */; };
 		8EB7EA3A235CB4DB00B235DD /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA39235CB4DB00B235DD /* MainMenuView.swift */; };
 		8EBD0DBD236F49D000504D97 /* DetectedPlaneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */; };
+		8EDAAB2923763FD700CFF8F1 /* checkerboard-tile.png in Resources */ = {isa = PBXBuildFile; fileRef = 8EDAAB2723763FD700CFF8F1 /* checkerboard-tile.png */; };
 		8EF238522367B4AF00BE2C51 /* ship.scn in Resources */ = {isa = PBXBuildFile; fileRef = 8EF238512367B4AF00BE2C51 /* ship.scn */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerFacingText.swift; sourceTree = "<group>"; };
 		8EB7EA39235CB4DB00B235DD /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DetectedPlaneNode.swift; path = "My AR/DetectedPlaneNode.swift"; sourceTree = SOURCE_ROOT; };
+		8EDAAB2723763FD700CFF8F1 /* checkerboard-tile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkerboard-tile.png"; sourceTree = "<group>"; };
 		8EF238512367B4AF00BE2C51 /* ship.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ship.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,6 +114,7 @@
 		8EF238532367B4D200BE2C51 /* SCN Assets */ = {
 			isa = PBXGroup;
 			children = (
+				8EDAAB2723763FD700CFF8F1 /* checkerboard-tile.png */,
 				8EF238512367B4AF00BE2C51 /* ship.scn */,
 			);
 			path = "SCN Assets";
@@ -176,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E315E2E233ADCD9006560FB /* LaunchScreen.storyboard in Resources */,
+				8EDAAB2923763FD700CFF8F1 /* checkerboard-tile.png in Resources */,
 				8E315E2B233ADCD9006560FB /* Assets.xcassets in Resources */,
 				8EF238522367B4AF00BE2C51 /* ship.scn in Resources */,
 				8E315E29233ADCD7006560FB /* Main.storyboard in Resources */,

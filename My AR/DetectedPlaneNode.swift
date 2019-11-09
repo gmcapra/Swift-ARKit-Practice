@@ -38,7 +38,7 @@ class DetectedPlaneNode: SCNNode {
         */
         let planeNode = SCNNode(geometry: self.planeGeometry)
         planeNode.position = SCNVector3(anchor.center.x, 0, anchor.center.z)
-        planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2.0, 1.0, 0.0, 0.0)
+        planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 4.0, 1.0, 0.0, 0.0)
         
         // Update plane material
         updatePlaneMaterialDimensions()
@@ -86,6 +86,26 @@ class DetectedPlaneNode: SCNNode {
         let width = Float(self.planeGeometry.width)
         let height = Float(self.planeGeometry.height)
         material.diffuse.contentsTransform = SCNMatrix4MakeScale(width, height, 1.0)
+    }
+    
+    /*
+     This method adds the set animation to the detected plane. This means that
+     the plane is ready and waiting to be repositioned.
+     
+     */
+    func addAnimation() {
+        let hoverUp = SCNAction.moveBy(x: 0, y: 0.2, z: 0, duration: 2.5)
+        let hoverDown = SCNAction.moveBy(x: 0, y: -0.2, z: 0, duration: 2.5)
+        let hoverSequence = SCNAction.sequence([hoverUp, hoverDown])
+        let repeatHover = SCNAction.repeatForever(hoverSequence)
+        self.runAction(repeatHover)
+    }
+    
+    /*
+     This method stops all current animations on the detected plane.
+     */
+    func stopAnimation() {
+        self.removeAllActions()
     }
     
     required init?(coder aDecoder: NSCoder) {
