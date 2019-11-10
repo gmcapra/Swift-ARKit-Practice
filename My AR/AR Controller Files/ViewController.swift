@@ -14,18 +14,34 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
        
     // AR Scene Elements
     @IBOutlet var gameSceneView: ARSCNView!
+    
     // Define the array of detectedPlanes
     // Every plane has own UUID
     var detectedPlanes = [UUID: DetectedPlaneNode]()
+    //Only allow creation of one plane
+    var planeWasCreated:Bool!
     
     // Define Views
     var userOnboardingView: UserOnboardingView!
     var mainMenuView: MainMenuView!
-    // var planeSetupHUDView: PlaneSetupHUDView!
+    var planeDetectionHUDView: PlaneDetectionHUDView!
+    var adjustPlaneHUDView: AdjustPlaneHUDView!
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Create the HUD to adjust plane properties
+        adjustPlaneHUDView = AdjustPlaneHUDView(arUIElements: AR_UI_Elements_())
+        view.addSubview(adjustPlaneHUDView)
+        adjustPlaneHUDView.buildView()
+        adjustPlaneHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
+        
+        // Create the plane detection HUD
+        planeDetectionHUDView = PlaneDetectionHUDView(arUIElements: AR_UI_Elements_())
+        view.addSubview(planeDetectionHUDView)
+        planeDetectionHUDView.buildView()
+        planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
         
         // Add The Main Menu View
         mainMenuView = MainMenuView(arUIElements: AR_UI_Elements_())
@@ -38,7 +54,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
             view.addSubview(userOnboardingView)
             userOnboardingView.buildView()
         }
-
         
         ///////////////////////////////////////////////
         // Add other views here
@@ -52,7 +67,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         
         // Add the AR Scene
         setupARScene()
-    
         
     }
     
@@ -83,7 +97,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     }
     
     func setupARScene() {
-
         // enable to show feature dots that the camera recognizes
         gameSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         // initialize the scene
@@ -91,9 +104,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         gameSceneView.scene = scene
         // set the delegate of the sceneview to self
         gameSceneView.delegate = self
-        
+        planeWasCreated = false
     }
-    
     
     func configureARSession(detectPlanes: Bool) {
         // configure the AR session and check for plane detection
@@ -106,23 +118,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         gameSceneView.session.run(config)
     }
     
-    func startGame() {
+    func startDetection() {
         // User tapped the Start Button.
-        print("starting game set up, adding AR scene")
-        
+        print("starting plane detection, adding horizontal plane detection")
+        // Move the plane detection HUD in
+        planeDetectionHUDView.animateLeadingAnchor(constant: 0)
         // Start detecting and showing planes
         configureARSession(detectPlanes: true)
-
         // This function recognizes a tap:
-        // After a tap, a 3D Rocket is added to the plane
-           addTapGestureToARSceneView()
-        
+        // After a tap, take the user to edit the plane
+        addTapGestureToARSceneView()
     }
-    
-    
-    
-    
-    // MARK: Augmented Reality Plane Detection, Updates, and Gesture Recognition
     
     func addTapGestureToARSceneView() {
         // Enable the tap gesture recognizer in the AR Scene View
@@ -130,20 +136,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         gameSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    func addLightingEffects() {
-        // Enable lighting effects in the AR Scene View
-        gameSceneView.autoenablesDefaultLighting = true
-        gameSceneView.automaticallyUpdatesLighting = true
-    }
-    
     @objc func stopPlaneDetection(withGestureRecognizer recognizer: UIGestureRecognizer) {
         if detectedPlanes.count > 0 {
             //if we have a valid plane, the user taps to stop updating
-            print("STOP PLANE DETECTION")
+            print("stopping plane detection, allow user to edit plane properties")
+            planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
+            adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
             configureARSession(detectPlanes: false)
         }
     }
     
+    /*
+     This method can be called as a tap gesture. When called, this method
+     adds a 3d model of a rocket to the scene.
+     */
     @objc func addObjectToARSceneView(withGestureRecognizer recognizer: UIGestureRecognizer) {
         print("tap")
         let tapLocation = recognizer.location(in: gameSceneView)
@@ -163,50 +169,77 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         gameSceneView.scene.rootNode.addChildNode(shipNode)
     }
     
-        // MARK: - ARSCNViewDelegate
-        
-    /*
-    // This can be overidden to create and configure nodes when anchors are added to the session
-        func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-            let node = SCNNode()
-            return node
+}
+
+// MARK: - AR Session Delegate
+
+extension ViewController: ARSessionDelegate {
+    func session(_ session: ARSession, didFailWithError error: Error) {
+        guard
+            let error = error as? ARError,
+            let code = ARError.Code(rawValue: error.errorCode)
+            else { return }
+        switch code {
+        case .cameraUnauthorized:
+            self.planeDetectionHUDView.informationLabel.text = "Camera tracking is not available. Please check your camera permissions."
+        default:
+            self.planeDetectionHUDView.informationLabel.text = "Error starting ARKit. Please try to relaunch the app."
         }
-    */
-        
-        func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-            // create a 3d plane from given anchor
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+  }
+
+  func session(_ session: ARSession, cameraDidChangeTrackingState camera: ARCamera) {
+    switch camera.trackingState {
+    case .limited(let reason):
+      switch reason {
+        case .excessiveMotion:
+            self.planeDetectionHUDView.informationLabel.text = "Camera is moving too fast!"
+        case .initializing, .relocalizing:
+            self.planeDetectionHUDView.informationLabel.text = "ARKit is loading.\nMove the camera around to speed up calibration."
+        case .insufficientFeatures:
+            self.planeDetectionHUDView.informationLabel.text = "Move the camera around or adjust the light in your environment."
+        @unknown default:
+            print("default unknown")
+        }
+    case .normal:
+        self.planeDetectionHUDView.informationLabel.text = "Searching for level surfaces..."
+    case .notAvailable:
+        self.planeDetectionHUDView.informationLabel.text = "Camera tracking unavailable."
+        }
+    
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        // create a 3d plane from given anchor
+        if let arPlaneAnchor = anchor as? ARPlaneAnchor {
+           if (!planeWasCreated) {
                 let plane = DetectedPlaneNode(anchor: arPlaneAnchor)
                 self.detectedPlanes[arPlaneAnchor.identifier] = plane
+                // only add the plane if one doesn't exist
+                planeWasCreated = true
                 node.addChildNode(plane)
                 plane.addAnimation()
             }
         }
-        
-        func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor, let plane = detectedPlanes[arPlaneAnchor.identifier] {
-                plane.updateWithNewAnchor(arPlaneAnchor)
-            }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        if let arPlaneAnchor = anchor as? ARPlaneAnchor, let plane = detectedPlanes[arPlaneAnchor.identifier] {
+            plane.position = SCNVector3(arPlaneAnchor.center.x, 0, arPlaneAnchor.center.z)
         }
-        
-        func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
-            if let arPlaneAnchor = anchor as? ARPlaneAnchor, let index = detectedPlanes.index(forKey: arPlaneAnchor.identifier) {
-                detectedPlanes.remove(at: index)
-            }
+    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, didRemove node: SCNNode, for anchor: ARAnchor) {
+        if let arPlaneAnchor = anchor as? ARPlaneAnchor, let index = detectedPlanes.index(forKey: arPlaneAnchor.identifier) {
+            detectedPlanes.remove(at: index)
         }
-        
-        func session(_ session: ARSession, didFailWithError error: Error) {
-            // Present error message to user
-            
-        }
-        
-        func sessionWasInterrupted(_ session: ARSession) {
-            // Present overlay informing user session was interrupted
-            
-        }
+    }
+    
+    func sessionWasInterrupted(_ session: ARSession) {
+        // Present overlay informing user session was interrupted
+    }
     
 }
-    
+
 extension float4x4 {
     var translation: SIMD3<Float> {
         let translation = self.columns.3

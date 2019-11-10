@@ -62,8 +62,7 @@ class MainMenuView: UIView {
         addSubview(gameCenterButton)
         gameCenterButton.translatesAutoresizingMaskIntoConstraints = false
         gameCenterButton.setBackgroundImage(UIImage(named: "gameCenterButton"), for: .normal)
-        //forward.addTarget(self, action: #selector(navigateOnboarding), for: .touchUpInside)
-        gameCenterButton.isHidden = false
+        gameCenterButton.isHidden = true
         
         // Activate constraints for menu items
         NSLayoutConstraint.activate([
@@ -86,7 +85,7 @@ class MainMenuView: UIView {
         // Remove the main menu and alert the vc to start the game
         animateLeadingAnchor(constant: AR_UI_Elements_.Sizing.width)
         if let vc = self.window!.rootViewController as? ViewController {
-            vc.startGame()
+            vc.startDetection()
         }
     }
 

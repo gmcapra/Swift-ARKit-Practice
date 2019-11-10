@@ -13,6 +13,8 @@
 		8E315E29233ADCD7006560FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E315E27233ADCD7006560FB /* Main.storyboard */; };
 		8E315E2B233ADCD9006560FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8E315E2A233ADCD9006560FB /* Assets.xcassets */; };
 		8E315E2E233ADCD9006560FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8E315E2C233ADCD9006560FB /* LaunchScreen.storyboard */; };
+		8EAE59FA23774993001AE48D /* PlaneDetectionHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAE59F923774993001AE48D /* PlaneDetectionHUDView.swift */; };
+		8EAE59FC2377A313001AE48D /* AdjustPlaneHUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EAE59FB2377A313001AE48D /* AdjustPlaneHUDView.swift */; };
 		8EB7EA32235CA10600B235DD /* AR_UI_Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA31235CA10600B235DD /* AR_UI_Elements.swift */; };
 		8EB7EA34235CA32800B235DD /* UserOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA33235CA32800B235DD /* UserOnboardingView.swift */; };
 		8EB7EA36235CA50C00B235DD /* CustomerFacingText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */; };
@@ -31,6 +33,8 @@
 		8E315E2A233ADCD9006560FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E315E2D233ADCD9006560FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8E315E2F233ADCD9006560FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		8EAE59F923774993001AE48D /* PlaneDetectionHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaneDetectionHUDView.swift; sourceTree = "<group>"; };
+		8EAE59FB2377A313001AE48D /* AdjustPlaneHUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdjustPlaneHUDView.swift; sourceTree = "<group>"; };
 		8EB7EA31235CA10600B235DD /* AR_UI_Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AR_UI_Elements.swift; sourceTree = "<group>"; };
 		8EB7EA33235CA32800B235DD /* UserOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOnboardingView.swift; sourceTree = "<group>"; };
 		8EB7EA35235CA50C00B235DD /* CustomerFacingText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerFacingText.swift; sourceTree = "<group>"; };
@@ -72,16 +76,23 @@
 			children = (
 				8E315E21233ADCD7006560FB /* AppDelegate.swift */,
 				8EB7EA3B235CB4E600B235DD /* UI Element Properties */,
+				8EAE59FD2377A461001AE48D /* Storyboards */,
 				8EB7EA3C235CB50800B235DD /* Views */,
-				8EB7EA3D235CB52100B235DD /* AR Controller */,
-				8E315E25233ADCD7006560FB /* Experience.rcproject */,
-				8E315E27233ADCD7006560FB /* Main.storyboard */,
+				8EB7EA3D235CB52100B235DD /* AR Controller Files */,
 				8E315E2A233ADCD9006560FB /* Assets.xcassets */,
 				8EF238532367B4D200BE2C51 /* SCN Assets */,
-				8E315E2C233ADCD9006560FB /* LaunchScreen.storyboard */,
 				8E315E2F233ADCD9006560FB /* Info.plist */,
 			);
 			path = "My AR";
+			sourceTree = "<group>";
+		};
+		8EAE59FD2377A461001AE48D /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				8E315E27233ADCD7006560FB /* Main.storyboard */,
+				8E315E2C233ADCD9006560FB /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
 			sourceTree = "<group>";
 		};
 		8EB7EA3B235CB4E600B235DD /* UI Element Properties */ = {
@@ -98,17 +109,20 @@
 			children = (
 				8EB7EA33235CA32800B235DD /* UserOnboardingView.swift */,
 				8EB7EA39235CB4DB00B235DD /* MainMenuView.swift */,
+				8EAE59FB2377A313001AE48D /* AdjustPlaneHUDView.swift */,
+				8EAE59F923774993001AE48D /* PlaneDetectionHUDView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		8EB7EA3D235CB52100B235DD /* AR Controller */ = {
+		8EB7EA3D235CB52100B235DD /* AR Controller Files */ = {
 			isa = PBXGroup;
 			children = (
+				8E315E25233ADCD7006560FB /* Experience.rcproject */,
 				8E315E23233ADCD7006560FB /* ViewController.swift */,
 				8EBD0DBC236F49D000504D97 /* DetectedPlaneNode.swift */,
 			);
-			path = "AR Controller";
+			path = "AR Controller Files";
 			sourceTree = "<group>";
 		};
 		8EF238532367B4D200BE2C51 /* SCN Assets */ = {
@@ -193,6 +207,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8EAE59FC2377A313001AE48D /* AdjustPlaneHUDView.swift in Sources */,
 				8E315E24233ADCD7006560FB /* ViewController.swift in Sources */,
 				8EB7EA3A235CB4DB00B235DD /* MainMenuView.swift in Sources */,
 				8EBD0DBD236F49D000504D97 /* DetectedPlaneNode.swift in Sources */,
@@ -201,6 +216,7 @@
 				8E315E26233ADCD7006560FB /* Experience.rcproject in Sources */,
 				8EB7EA32235CA10600B235DD /* AR_UI_Elements.swift in Sources */,
 				8EB7EA34235CA32800B235DD /* UserOnboardingView.swift in Sources */,
+				8EAE59FA23774993001AE48D /* PlaneDetectionHUDView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

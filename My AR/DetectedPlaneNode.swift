@@ -38,7 +38,7 @@ class DetectedPlaneNode: SCNNode {
         */
         let planeNode = SCNNode(geometry: self.planeGeometry)
         planeNode.position = SCNVector3(anchor.center.x, 0, anchor.center.z)
-        planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 4.0, 1.0, 0.0, 0.0)
+        planeNode.transform = SCNMatrix4MakeRotation(-Float.pi / 2.0, 1.0, 0.0, 0.0)
         
         // Update plane material
         updatePlaneMaterialDimensions()
@@ -69,7 +69,7 @@ class DetectedPlaneNode: SCNNode {
         self.position = SCNVector3(anchor.center.x, 0, anchor.center.z)
         
         // scale the plane so that it is more apparent to user
-        self.scale = SCNVector3(3,1,10)
+        self.scale = SCNVector3(5,1,5)
         
         // update the material for the plane
         updatePlaneMaterialDimensions()
@@ -94,8 +94,8 @@ class DetectedPlaneNode: SCNNode {
      
      */
     func addAnimation() {
-        let hoverUp = SCNAction.moveBy(x: 0, y: 0.2, z: 0, duration: 2.5)
-        let hoverDown = SCNAction.moveBy(x: 0, y: -0.2, z: 0, duration: 2.5)
+        let hoverUp = SCNAction.moveBy(x: 0, y: 0.02, z: 0, duration: 2)
+        let hoverDown = SCNAction.moveBy(x: 0, y: -0.02, z: 0, duration: 2)
         let hoverSequence = SCNAction.sequence([hoverUp, hoverDown])
         let repeatHover = SCNAction.repeatForever(hoverSequence)
         self.runAction(repeatHover)
@@ -107,6 +107,7 @@ class DetectedPlaneNode: SCNNode {
     func stopAnimation() {
         self.removeAllActions()
     }
+    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

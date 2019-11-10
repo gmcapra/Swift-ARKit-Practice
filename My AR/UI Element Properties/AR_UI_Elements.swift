@@ -47,6 +47,11 @@ struct AR_UI_Elements_ {
         static let playButtonToBottomButtons = height/8
         static let gameCenterButtonSize = height/10
         
+        // Plane Detection HUD Sizes
+        static let informationLabelWidth = 8*width/10
+        static let informationLabelHeight = 3*width/10
+
+        
         
     }
 
@@ -60,6 +65,10 @@ struct AR_UI_Elements_ {
         
         static let playButtonFontName = "Helvetica"
         static let playButtonFont = UIFont(name: playButtonFontName, size: 40)
+        
+        static let informationLabelFontName = "Helvetica"
+        static let informationLabelFont = UIFont(name: informationLabelFontName, size: 20)
+        static let secondaryInformationLabelFont = UIFont(name: informationLabelFontName, size: 14)
 
     }
     
