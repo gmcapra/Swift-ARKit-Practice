@@ -19,7 +19,6 @@ class PlaneDetectionHUDView: UIView {
     // Objects
     let informationLabel = UILabel()
     let informationLabel2 = UILabel()
-    let rescanButton = UIButton()
 
         
     init(arUIElements: AR_UI_Elements_) {
@@ -64,7 +63,7 @@ class PlaneDetectionHUDView: UIView {
         informationLabel2.translatesAutoresizingMaskIntoConstraints = false
         informationLabel2.isUserInteractionEnabled = false
         informationLabel2.font = AR_UI_Elements_.Font.secondaryInformationLabelFont
-        informationLabel2.text = "Move the camera around to speed up calibration. After detection, tap the screen to confirm and begin editing the plane."
+        informationLabel2.text = "Moving the camera around can help speed up calibration."
         informationLabel2.numberOfLines = 0
         informationLabel2.textAlignment = .center
         informationLabel2.textColor = .white

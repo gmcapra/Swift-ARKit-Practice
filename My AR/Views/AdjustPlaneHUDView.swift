@@ -17,7 +17,7 @@ class AdjustPlaneHUDView: UIView {
     var adjustPlaneHUDViewLeadingAnchor: NSLayoutConstraint!
     
     // Objects
-    let testLabel = UILabel()
+    let infoLabel = UILabel()
 
         
     init(arUIElements: AR_UI_Elements_) {
@@ -46,22 +46,22 @@ class AdjustPlaneHUDView: UIView {
         }
         
         // Add information label to inform user on steps
-        addSubview(testLabel)
-        testLabel.isHidden = false
-        testLabel.translatesAutoresizingMaskIntoConstraints = false
-        testLabel.isUserInteractionEnabled = false
-        testLabel.font = AR_UI_Elements_.Font.playButtonFont
-        testLabel.text = "Plane\nAdjustments"
-        testLabel.numberOfLines = 0
-        testLabel.textAlignment = .center
-        testLabel.textColor = .white
+        addSubview(infoLabel)
+        infoLabel.isHidden = false
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.isUserInteractionEnabled = false
+        infoLabel.font = AR_UI_Elements_.Font.informationLabelFont
+        infoLabel.text = "Plane Detected"
+        infoLabel.numberOfLines = 0
+        infoLabel.textAlignment = .center
+        infoLabel.textColor = .green
         
         // Activate constraints for menu items
         NSLayoutConstraint.activate([
-            testLabel.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
-            testLabel.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
-            testLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            testLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 0)
+            infoLabel.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
+            infoLabel.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
+            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AR_UI_Elements_.Sizing.width/10)
             ])
     }
     

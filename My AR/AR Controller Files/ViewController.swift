@@ -125,26 +125,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         planeDetectionHUDView.animateLeadingAnchor(constant: 0)
         // Start detecting and showing planes
         configureARSession(detectPlanes: true)
-        // This function recognizes a tap:
-        // After a tap, take the user to edit the plane
-        addTapGestureToARSceneView()
+        
+        // After a tap, add a rocket model to the scene
+        // addTapGestureToARSceneView()
     }
     
     func addTapGestureToARSceneView() {
         // Enable the tap gesture recognizer in the AR Scene View
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.stopPlaneDetection(withGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
         gameSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    @objc func stopPlaneDetection(withGestureRecognizer recognizer: UIGestureRecognizer) {
-        if detectedPlanes.count > 0 {
-            //if we have a valid plane, the user taps to stop updating
-            print("stopping plane detection, allow user to edit plane properties")
-            planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
-            adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
-            configureARSession(detectPlanes: false)
-        }
+    func stopDetectingPlanes() {
+        //if we have a valid plane, the user taps to stop updating
+        print("stopping plane detection, allow user to edit plane properties")
+        planeWasCreated = true
+        planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
+        adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
+        configureARSession(detectPlanes: false)
     }
+    
     
     /*
      This method can be called as a tap gesture. When called, this method
@@ -218,6 +218,10 @@ extension ViewController: ARSessionDelegate {
                 planeWasCreated = true
                 node.addChildNode(plane)
                 plane.addAnimation()
+                DispatchQueue.main.async {
+                    self.planeDetectionHUDView.informationLabel.text = "Plane Detected."
+                    self.stopDetectingPlanes()
+                }
             }
         }
     }
