@@ -1,5 +1,5 @@
 # Swift-ARKit-Practice
-Project files for a practice iOS App intended for reference in using Swift's ARKit Library for Augmented Reality. Specifically, in this project I explore plane detection and interacting with objects/3d textures within AR Scenes.
+Project files for a practice iOS App intended for reference in using Swift's ARKit Library for Augmented Reality. Specifically, in this project I explore plane detection and interaction with 3D objects within AR Scenes.
 This xcode project can be used as a reference for anyone looking to get started with AR Kit in Swift. In this project:
 
  - Track feature points in real-time and gather data
