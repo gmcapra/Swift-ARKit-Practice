@@ -10,7 +10,7 @@ import UIKit
 import RealityKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
+class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDelegate, ARSessionObserver {
        
     // AR Scene Elements
     @IBOutlet var gameSceneView: ARSCNView!
@@ -18,8 +18,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
     // Define the array of detectedPlanes
     // Every plane has own UUID
     var detectedPlanes = [UUID: DetectedPlaneNode]()
-    //Only allow creation of one plane
+    // Only allow creation of one plane, track if created
     var planeWasCreated:Bool!
+    // Define the main plane that will be used once detected
+    var myPlane: DetectedPlaneNode!
+    // Initialize the current angles for the plane's rotation
+    var currentAngleY: Float = 0.0
     
     // Define Views
     var userOnboardingView: UserOnboardingView!
@@ -59,9 +63,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         // Add other views here
         // 1. Need overlay for walking user through primary game plane setup
         // 2. Additional view to add...
-        // 3. Additional view to add...
-        // 4. Additional view to add...
-        //
         //
         ///////////////////////////////////////////////
         
@@ -125,15 +126,21 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         planeDetectionHUDView.animateLeadingAnchor(constant: 0)
         // Start detecting and showing planes
         configureARSession(detectPlanes: true)
-        
-        // After a tap, add a rocket model to the scene
-        // addTapGestureToARSceneView()
+        // Add gestures for plane manipulation
+        addGesturesToARSceneView()
     }
     
-    func addTapGestureToARSceneView() {
-        // Enable the tap gesture recognizer in the AR Scene View
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
-        gameSceneView.addGestureRecognizer(tapGestureRecognizer)
+    func addGesturesToARSceneView() {
+        // Define gestures to be added to the scene
+//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
+        let pinchToScaleGesture = UIPinchGestureRecognizer(target: self, action: #selector(didPinch(_:)))
+        let panToRotateGesture = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
+        panToRotateGesture.delegate = self
+        
+        // Add gestures to the AR Scene
+        //gameSceneView.addGestureRecognizer(tapGestureRecognizer)
+        gameSceneView.addGestureRecognizer(pinchToScaleGesture)
+        gameSceneView.addGestureRecognizer(panToRotateGesture)
     }
     
     func stopDetectingPlanes() {
@@ -145,6 +152,67 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionObserver {
         configureARSession(detectPlanes: false)
     }
     
+    /*
+     This method handles scaling when a pinch gesture is recognized
+     */
+    @objc
+    func didPinch(_ gesture: UIPinchGestureRecognizer) {
+        guard let _ = myPlane else { return }
+        var originalScale = myPlane?.scale
+        switch gesture.state {
+        case .began:
+            originalScale = myPlane?.scale
+            gesture.scale = CGFloat((myPlane?.scale.x)!)
+        case .changed:
+            guard var newScale = originalScale else { return }
+            if gesture.scale < 0.5{ newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5) }else if gesture.scale > 5{
+                newScale = SCNVector3(5, 5, 5)
+            }else{
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+            myPlane?.scale = newScale
+        case .ended:
+            guard var newScale = originalScale else { return }
+            if gesture.scale < 0.5 { newScale = SCNVector3(x: 0.5, y: 0.5, z: 0.5) } else if gesture.scale > 5 {
+                newScale = SCNVector3(5, 5, 5)
+            } else{
+                newScale = SCNVector3(gesture.scale, gesture.scale, gesture.scale)
+            }
+            myPlane?.scale = newScale
+            gesture.scale = CGFloat((myPlane?.scale.x)!)
+        default:
+            gesture.scale = 1.0
+            originalScale = nil
+        }
+    }
+    
+    /*
+     This method handles rotation when pan gestures are recognized.
+     */
+    @objc
+    func didPan(_ gesture: UIPanGestureRecognizer) {
+        
+        guard let _ = myPlane else { return }
+        let translation = gesture.translation(in: gesture.view)
+        var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
+        
+        if case .Left = gesture.horizontalDirection(target: self.view) {
+            print("Swiping left")
+            newAngleY += currentAngleY
+            myPlane?.eulerAngles.y = newAngleY
+            if gesture.state == .ended {
+                currentAngleY = newAngleY
+            }
+        }
+        else if case .Right = gesture.horizontalDirection(target: self.view) {
+            print("Swiping right")
+            newAngleY += currentAngleY
+            myPlane?.eulerAngles.y = newAngleY
+            if gesture.state == .ended {
+                    currentAngleY = newAngleY
+            }
+        }
+    }
     
     /*
      This method can be called as a tap gesture. When called, this method
@@ -219,6 +287,7 @@ extension ViewController: ARSessionDelegate {
                 node.addChildNode(plane)
                 plane.addAnimation()
                 DispatchQueue.main.async {
+                    self.myPlane = plane
                     self.planeDetectionHUDView.informationLabel.text = "Plane Detected."
                     self.stopDetectingPlanes()
                 }
@@ -249,4 +318,39 @@ extension float4x4 {
         let translation = self.columns.3
         return SIMD3<Float>(translation.x, translation.y, translation.z)
     }
+}
+
+extension UIPanGestureRecognizer {
+
+    enum GestureDirection {
+        case Up
+        case Down
+        case Left
+        case Right
+    }
+
+    /// Get current vertical direction
+    ///
+    /// - Parameter target: view target
+    /// - Returns: current direction
+    func verticalDirection(target: UIView) -> GestureDirection {
+        return self.velocity(in: target).y > 0 ? .Down : .Up
+    }
+
+    /// Get current horizontal direction
+    ///
+    /// - Parameter target: view target
+    /// - Returns: current direction
+    func horizontalDirection(target: UIView) -> GestureDirection {
+        return self.velocity(in: target).x > 0 ? .Right : .Left
+    }
+
+    /// Get a tuple for current horizontal/vertical direction
+    ///
+    /// - Parameter target: view target
+    /// - Returns: current direction
+    func versus(target: UIView) -> (horizontal: GestureDirection, vertical: GestureDirection) {
+        return (self.horizontalDirection(target: target), self.verticalDirection(target: target))
+    }
+
 }
