@@ -16,8 +16,13 @@ class AdjustPlaneHUDView: UIView {
     // Anchors used to manipulate "swipe to exit" effect
     var adjustPlaneHUDViewLeadingAnchor: NSLayoutConstraint!
     
+    // Define the sliders
+    var rotateYSlider: UISlider!
+    var rotateZSlider: UISlider!
+    
     // Objects
-    let infoLabel = UILabel()
+    let infoLabelTop = UILabel()
+    let infoLabelBottom = UILabel()
 
         
     init(arUIElements: AR_UI_Elements_) {
@@ -45,23 +50,38 @@ class AdjustPlaneHUDView: UIView {
                 ])
         }
         
-        // Add information label to inform user on steps
-        addSubview(infoLabel)
-        infoLabel.isHidden = false
-        infoLabel.translatesAutoresizingMaskIntoConstraints = false
-        infoLabel.isUserInteractionEnabled = false
-        infoLabel.font = AR_UI_Elements_.Font.informationLabelFont
-        infoLabel.text = "Plane Detected"
-        infoLabel.numberOfLines = 0
-        infoLabel.textAlignment = .center
-        infoLabel.textColor = .green
+        // Add information label to inform user plane was detected
+        addSubview(infoLabelTop)
+        infoLabelTop.isHidden = false
+        infoLabelTop.translatesAutoresizingMaskIntoConstraints = false
+        infoLabelTop.isUserInteractionEnabled = false
+        infoLabelTop.font = AR_UI_Elements_.Font.informationLabelFont
+        infoLabelTop.text = "Plane Detected"
+        infoLabelTop.numberOfLines = 0
+        infoLabelTop.textAlignment = .center
+        infoLabelTop.textColor = .green
+        
+        // Add information label to inform user on steps to take
+        addSubview(infoLabelBottom)
+        infoLabelBottom.isHidden = false
+        infoLabelBottom.translatesAutoresizingMaskIntoConstraints = false
+        infoLabelBottom.isUserInteractionEnabled = false
+        infoLabelBottom.font = AR_UI_Elements_.Font.secondaryInformationLabelFont
+        infoLabelBottom.text = "Pinch to scale the plane, swipe across the screen to adjust rotation."
+        infoLabelBottom.numberOfLines = 0
+        infoLabelBottom.textAlignment = .center
+        infoLabelBottom.textColor = .white
         
         // Activate constraints for menu items
         NSLayoutConstraint.activate([
-            infoLabel.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
-            infoLabel.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
-            infoLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            infoLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AR_UI_Elements_.Sizing.width/10)
+            infoLabelTop.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
+            infoLabelTop.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
+            infoLabelTop.centerXAnchor.constraint(equalTo: centerXAnchor),
+            infoLabelTop.topAnchor.constraint(equalTo: topAnchor, constant: AR_UI_Elements_.Sizing.width/8),
+            infoLabelBottom.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
+            infoLabelBottom.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
+            infoLabelBottom.centerXAnchor.constraint(equalTo: centerXAnchor),
+            infoLabelBottom.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AR_UI_Elements_.Sizing.width/10)
             ])
     }
     

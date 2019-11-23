@@ -157,6 +157,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
      */
     @objc
     func didPinch(_ gesture: UIPinchGestureRecognizer) {
+        self.adjustPlaneHUDView.infoLabelTop.isHidden = true
         guard let _ = myPlane else { return }
         var originalScale = myPlane?.scale
         switch gesture.state {
@@ -191,7 +192,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
      */
     @objc
     func didPan(_ gesture: UIPanGestureRecognizer) {
-        
+        self.adjustPlaneHUDView.infoLabelTop.isHidden = true
         guard let _ = myPlane else { return }
         let translation = gesture.translation(in: gesture.view)
         var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
