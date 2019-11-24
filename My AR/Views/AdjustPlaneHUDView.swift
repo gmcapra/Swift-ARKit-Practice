@@ -17,8 +17,8 @@ class AdjustPlaneHUDView: UIView {
     var adjustPlaneHUDViewLeadingAnchor: NSLayoutConstraint!
     
     // Define the sliders
-    var rotateYSlider: UISlider!
-    var rotateZSlider: UISlider!
+    var zRotationSlider: UISlider!
+    var zPositionSlider: UISlider!
     
     // Objects
     let infoLabelTop = UILabel()
@@ -50,6 +50,26 @@ class AdjustPlaneHUDView: UIView {
                 ])
         }
         
+        zRotationSlider = UISlider(frame: CGRect(x: 0, y: 8*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
+        zRotationSlider.tag = 1
+        zRotationSlider.isHidden = true
+        zRotationSlider.minimumValue = 0
+        zRotationSlider.maximumValue = 360
+        zRotationSlider.isContinuous = true
+        zRotationSlider.tintColor = UIColor.yellow
+        zRotationSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
+        addSubview(zRotationSlider)
+        
+        zPositionSlider = UISlider(frame: CGRect(x: 0, y: 7*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
+        zPositionSlider.tag = 2
+        zPositionSlider.isHidden = true
+        zPositionSlider.minimumValue = -10
+        zPositionSlider.maximumValue = 10
+        zPositionSlider.isContinuous = true
+        zPositionSlider.tintColor = UIColor.green
+        zPositionSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
+        addSubview(zPositionSlider)
+
         // Add information label to inform user plane was detected
         addSubview(infoLabelTop)
         infoLabelTop.isHidden = false
@@ -85,6 +105,27 @@ class AdjustPlaneHUDView: UIView {
             ])
     }
     
+    @objc func sliderValueDidChange(_ sender:UISlider!)
+    {
+        infoLabelTop.isHidden = true
+        if let vc = self.window!.rootViewController as? ViewController {
+            // Snap to values step by step
+            let roundedStepValue = round(sender.value / 5) * 5
+            sender.value = roundedStepValue
+            print("Slider value \(Int(roundedStepValue))")
+            if sender.tag == 1 {
+                // Handle Z rotation
+                print("z rotation")
+                //vc.updateZRotation(sliderAngleZ: roundedStepValue)
+            }
+            else if sender.tag == 2 {
+                // Handle Z position
+                print("z position")
+                vc.updateZPosition(sliderPosZ: roundedStepValue)
+            }
+            print("Slider z rotation value changed")
+        }
+    }
 
     func animateLeadingAnchor(constant: CGFloat) {
         adjustPlaneHUDViewLeadingAnchor.constant = constant

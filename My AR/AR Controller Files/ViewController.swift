@@ -22,8 +22,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
     var planeWasCreated:Bool!
     // Define the main plane that will be used once detected
     var myPlane: DetectedPlaneNode!
-    // Initialize the current angles for the plane's rotation
+    // Initialize the current angles and positions for the plane's adjustments
     var currentAngleY: Float = 0.0
+    var currentAngleZ: Float = 0.0
+    var currentPositionZ: Float = 0.0
     
     // Define Views
     var userOnboardingView: UserOnboardingView!
@@ -147,10 +149,34 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
         //if we have a valid plane, the user taps to stop updating
         print("stopping plane detection, allow user to edit plane properties")
         planeWasCreated = true
-        planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
-        adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
+        reconfigureViewsForPlaneAdjustments()
         configureARSession(detectPlanes: false)
     }
+    
+    func reconfigureViewsForPlaneAdjustments() {
+        planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
+        adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
+        adjustPlaneHUDView.zPositionSlider.isHidden = false
+        adjustPlaneHUDView.zRotationSlider.isHidden = false
+//        currentAngleZ = myPlane.rotation.z
+//        currentPositionZ = myPlane.position.z
+//        adjustPlaneHUDView.zPositionSlider.value = currentPositionZ
+//        adjustPlaneHUDView.zRotationSlider.value = currentAngleZ
+    }
+    
+    func updateZPosition(sliderPosZ: Float) {
+        guard let _ = myPlane else { return }
+        //update the plane z position
+        //track current necessary?
+        //myPlane.position.z += sliderPosZ
+    }
+    
+    func updateZRotation(sliderPosZ: Float) {
+        guard let _ = myPlane else { return }
+        //update the plane z rotation
+        //track current necessary?
+    }
+       
     
     /*
      This method handles scaling when a pinch gesture is recognized
@@ -198,7 +224,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
         var newAngleY = (Float)(translation.x)*(Float)(Double.pi)/180.0
         
         if case .Left = gesture.horizontalDirection(target: self.view) {
-            print("Swiping left")
             newAngleY += currentAngleY
             myPlane?.eulerAngles.y = newAngleY
             if gesture.state == .ended {
@@ -206,7 +231,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
             }
         }
         else if case .Right = gesture.horizontalDirection(target: self.view) {
-            print("Swiping right")
             newAngleY += currentAngleY
             myPlane?.eulerAngles.y = newAngleY
             if gesture.state == .ended {
