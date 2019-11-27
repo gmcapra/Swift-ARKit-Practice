@@ -134,7 +134,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
     
     func addGesturesToARSceneView() {
         // Define gestures to be added to the scene
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
+        // let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
         let pinchToScaleGesture = UIPinchGestureRecognizer(target: self, action: #selector(didPinch(_:)))
         let panToRotateGesture = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
         panToRotateGesture.delegate = self
@@ -171,7 +171,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
         //myPlane.position.z += sliderPosZ
     }
     
-    func updateZRotation(sliderPosZ: Float) {
+    func updateZRotation(sliderAngleZ: Float) {
         guard let _ = myPlane else { return }
         //update the plane z rotation
         //track current necessary?

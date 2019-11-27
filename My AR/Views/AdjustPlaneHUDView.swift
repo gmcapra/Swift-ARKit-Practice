@@ -116,7 +116,7 @@ class AdjustPlaneHUDView: UIView {
             if sender.tag == 1 {
                 // Handle Z rotation
                 print("z rotation")
-                //vc.updateZRotation(sliderAngleZ: roundedStepValue)
+                vc.updateZRotation(sliderAngleZ: roundedStepValue)
             }
             else if sender.tag == 2 {
                 // Handle Z position
