@@ -58,7 +58,6 @@ class MainMenuView: UIView {
         startButton.setBackgroundImage(UIImage(named: "startButton"), for: .normal)
         startButton.addTarget(self, action: #selector(startButtonTapped), for: .touchUpInside)
         startButton.isHidden = false
-        
         addSubview(gameCenterButton)
         gameCenterButton.translatesAutoresizingMaskIntoConstraints = false
         gameCenterButton.setBackgroundImage(UIImage(named: "gameCenterButton"), for: .normal)

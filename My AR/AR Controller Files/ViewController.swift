@@ -140,6 +140,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
         panToRotateGesture.delegate = self
         
         // Add gestures to the AR Scene
+        // Uncomment to re enable
         //gameSceneView.addGestureRecognizer(tapGestureRecognizer)
         gameSceneView.addGestureRecognizer(pinchToScaleGesture)
         gameSceneView.addGestureRecognizer(panToRotateGesture)
