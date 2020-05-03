@@ -16,9 +16,9 @@ class AdjustPlaneHUDView: UIView {
     // Anchors used to manipulate "swipe to exit" effect
     var adjustPlaneHUDViewLeadingAnchor: NSLayoutConstraint!
     
-    // Define the sliders
-    var zRotationSlider: UISlider!
-    var zPositionSlider: UISlider!
+    // Define the sliders (unused)
+    //var zRotationSlider: UISlider!
+    //var zPositionSlider: UISlider!
     
     // Objects
     let infoLabelTop = UILabel()
@@ -50,25 +50,26 @@ class AdjustPlaneHUDView: UIView {
                 ])
         }
         
-        zRotationSlider = UISlider(frame: CGRect(x: 0, y: 8*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
-        zRotationSlider.tag = 1
-        zRotationSlider.isHidden = true
-        zRotationSlider.minimumValue = 0
-        zRotationSlider.maximumValue = 360
-        zRotationSlider.isContinuous = true
-        zRotationSlider.tintColor = UIColor.yellow
-        zRotationSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
-        addSubview(zRotationSlider)
-        
-        zPositionSlider = UISlider(frame: CGRect(x: 0, y: 7*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
-        zPositionSlider.tag = 2
-        zPositionSlider.isHidden = true
-        zPositionSlider.minimumValue = -10
-        zPositionSlider.maximumValue = 10
-        zPositionSlider.isContinuous = true
-        zPositionSlider.tintColor = UIColor.green
-        zPositionSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
-        addSubview(zPositionSlider)
+        // Code to add sliders to the UI
+//        zRotationSlider = UISlider(frame: CGRect(x: 0, y: 8*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
+//        zRotationSlider.tag = 1
+//        zRotationSlider.isHidden = true
+//        zRotationSlider.minimumValue = 0
+//        zRotationSlider.maximumValue = 360
+//        zRotationSlider.isContinuous = true
+//        zRotationSlider.tintColor = UIColor.yellow
+//        zRotationSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
+//        addSubview(zRotationSlider)
+//
+//        zPositionSlider = UISlider(frame: CGRect(x: 0, y: 7*AR_UI_Elements_.Sizing.height/10, width: AR_UI_Elements_.Sizing.width, height: 20))
+//        zPositionSlider.tag = 2
+//        zPositionSlider.isHidden = true
+//        zPositionSlider.minimumValue = -10
+//        zPositionSlider.maximumValue = 10
+//        zPositionSlider.isContinuous = true
+//        zPositionSlider.tintColor = UIColor.green
+//        zPositionSlider.addTarget(self, action: #selector(AdjustPlaneHUDView.sliderValueDidChange(_:)), for: .valueChanged)
+//        addSubview(zPositionSlider)
 
         // Add information label to inform user plane was detected
         addSubview(infoLabelTop)
@@ -87,7 +88,7 @@ class AdjustPlaneHUDView: UIView {
         infoLabelBottom.translatesAutoresizingMaskIntoConstraints = false
         infoLabelBottom.isUserInteractionEnabled = false
         infoLabelBottom.font = AR_UI_Elements_.Font.secondaryInformationLabelFont
-        infoLabelBottom.text = "Pinch to scale the plane, swipe across the screen to adjust rotation."
+        infoLabelBottom.text = "Pinch to scale the plane, swipe across the screen to adjust rotation.\n\nTap to place 3D object along plane."
         infoLabelBottom.numberOfLines = 0
         infoLabelBottom.textAlignment = .center
         infoLabelBottom.textColor = .white
@@ -101,7 +102,7 @@ class AdjustPlaneHUDView: UIView {
             infoLabelBottom.widthAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelWidth),
             infoLabelBottom.heightAnchor.constraint(equalToConstant: AR_UI_Elements_.Sizing.informationLabelHeight),
             infoLabelBottom.centerXAnchor.constraint(equalTo: centerXAnchor),
-            infoLabelBottom.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AR_UI_Elements_.Sizing.width/10)
+            infoLabelBottom.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -AR_UI_Elements_.Sizing.width/8)
             ])
     }
     
@@ -116,12 +117,12 @@ class AdjustPlaneHUDView: UIView {
             if sender.tag == 1 {
                 // Handle Z rotation
                 print("z rotation")
-                vc.updateZRotation(sliderAngleZ: roundedStepValue)
+                //vc.updateZRotation(sliderAngleZ: roundedStepValue)
             }
             else if sender.tag == 2 {
                 // Handle Z position
                 print("z position")
-                vc.updateZPosition(sliderPosZ: roundedStepValue)
+                //vc.updateZPosition(sliderPosZ: roundedStepValue)
             }
             print("Slider z rotation value changed")
         }

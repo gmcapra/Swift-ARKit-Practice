@@ -5,6 +5,15 @@
 //  Created by Gianluca Capraro on 9/24/19.
 //  Copyright © 2019 toggle. All rights reserved.
 //
+/* DESCRIPTION:
+// This is a practice app developed as a prototype to be transitioned as a learning project. This app is currently set up to start an augmented reality scene, detect a surface and represent it as a plane, and then allow the user to rotate, scale, and place an object on the plane.
+ */
+/*
+ OPPORTUNITIES TO TAKE FURTHER:
+ There are many ways to add to this project.
+ - A UI has already been developed, learn how to recreate similar 2D objects ontop of the 3D AR scene. This can be customized in any way for whatever future AR application it is used for
+ - Interact with, manipulate the 3D .scn model. Make it dynamic, change the 3D model, scale, rotate, and move the object around in 3D space. Learn how to pin it so that you can walk around it
+ */
 
 import UIKit
 import RealityKit
@@ -134,14 +143,14 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
     
     func addGesturesToARSceneView() {
         // Define gestures to be added to the scene
-        // let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ViewController.addObjectToARSceneView(withGestureRecognizer:)))
         let pinchToScaleGesture = UIPinchGestureRecognizer(target: self, action: #selector(didPinch(_:)))
         let panToRotateGesture = UIPanGestureRecognizer(target: self, action: #selector(didPan(_:)))
         panToRotateGesture.delegate = self
         
         // Add gestures to the AR Scene
         // Uncomment to re enable
-        //gameSceneView.addGestureRecognizer(tapGestureRecognizer)
+        gameSceneView.addGestureRecognizer(tapGestureRecognizer)
         gameSceneView.addGestureRecognizer(pinchToScaleGesture)
         gameSceneView.addGestureRecognizer(panToRotateGesture)
     }
@@ -157,8 +166,8 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, ARSCNViewDe
     func reconfigureViewsForPlaneAdjustments() {
         planeDetectionHUDView.animateLeadingAnchor(constant: -AR_UI_Elements_.Sizing.width)
         adjustPlaneHUDView.animateLeadingAnchor(constant: 0)
-        adjustPlaneHUDView.zPositionSlider.isHidden = false
-        adjustPlaneHUDView.zRotationSlider.isHidden = false
+//        adjustPlaneHUDView.zPositionSlider.isHidden = false
+        //adjustPlaneHUDView.zRotationSlider.isHidden = false
 //        currentAngleZ = myPlane.rotation.z
 //        currentPositionZ = myPlane.position.z
 //        adjustPlaneHUDView.zPositionSlider.value = currentPositionZ
